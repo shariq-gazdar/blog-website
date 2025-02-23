@@ -1,6 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Staatliches&display=swap");
 @theme {
-  --font-heading: "Raleway", Cursive;
+  --font-heading: "Raleway", serif;
   --font-body: "Roboto", san-serif;
+  --color-purple: #7c4ee4;
+  --color-dark-gray: #333333;
+  --color-gray: #666666;
+  --color-light-gray: #999999;
+  --color-bg-gray: #ffffff;
+}
+.h1 {
+  font-size: 64px;
+}
+.h2 {
+  font-size: 52px;
+}
+.h3 {
+  font-size: 48px;
+}
+.h4 {
+  font-size: 32px;
+}
+.h5 {
+  font-size: 26px;
+}
+.h6 {
+  font-size: 24px;
+}
+.button {
+  @apply px-10 py-2;
+}
+::-webkit-scrollbar {
+  /* display: none;
+   */
+  width: 10 px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray);
+  border-radius: 5px;
 }
