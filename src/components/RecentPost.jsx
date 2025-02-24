@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import vr from "../assets/recent-images/vr-man.png";
 import recent from "../jsons/recentPosts.json";
+import PostCards from "../uiUtils/PostCards";
 function RecentPost() {
   return (
-    <div className="flex flex-col gap-y-10">
+    <div className="flex flex-col gap-y-10 pb-10 justify-center">
       {/* Header */}
       <div className="flex justify-between mx-10 items-end mb-10">
         <h1 className="text-4xl font-heading font-bold">Our Recent Posts</h1>
@@ -11,9 +12,15 @@ function RecentPost() {
           View All
         </button>
       </div>
+      <div className="lg:hidden justify-between mx-10 items-end mb-10 flex ">
+        <h1 className="text-2xl font-heading font-bold">Our Recent Posts</h1>
+        <button className="text-xs font-medium text-white bg-purple px-5 lg:px-10 py-3 rounded-lg hover:bg-white hover:text-purple hover:border-purple hover:border">
+          View All
+        </button>
+      </div>
 
       {/* Post Content */}
-      <div className=" flex flex-col justify-between lg:flex-row mx-10 items-center lg:items-start">
+      <div className=" lg:flex flex-col justify-between lg:flex-row mx-10 items-center lg:items-start hidden">
         {/* VR Image */}
         <div
           style={{
@@ -49,6 +56,19 @@ function RecentPost() {
             </button>
           </div>
         </div>
+      </div>
+      {/* Posts */}
+      <div className="flex justify-center items-center gap-x-1 flex-wrap lg:flex-nowrap gap-y-10 lg:gap-y-0">
+        {recent.map((r) => (
+          <PostCards
+            key={r.title} // Add a unique key if available
+            image={r.image}
+            title={r.title}
+            content={r.content}
+            genre={r.genre}
+            publishDate={r.publishDate}
+          />
+        ))}
       </div>
     </div>
   );

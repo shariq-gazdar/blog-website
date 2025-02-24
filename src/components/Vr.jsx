@@ -11,7 +11,7 @@ function Vr() {
 
   return (
     <motion.div
-      className="h-96 mt-20 mb-56 mx-10 rounded-xl flex items-end p-6 relative "
+      className="h-96 lg:mt-20  lg:mb-56 mb-64 mt-20 mx-10  rounded-xl flex items-end p-6 relative "
       data-aos="fade-in"
       initial={{ opacity: 0, x: 200 }}
       animate={{ opacity: 1, x: 0 }}
@@ -21,12 +21,12 @@ function Vr() {
         backgroundPosition: "center",
       }}
     >
-      <div className="bg-white text-black rounded-xl p-6 w-[80%] shadow-lg absolute right-0 top-[15rem] ">
+      <div className="bg-white text-black lg:rounded-xl p-6 lg:w-[80%] w-full lg:shadow-lg absolute left-0 lg:left-[20%] lg:right-0 lg:top-[15rem]  top-[100%] ">
         <div className="flex gap-x-2 font-body text-sm">
           <h1 className="font-heading font-bold">DEVELOPMENT</h1>
           <h1 className="text-black/70">16 March 2023</h1>
         </div>
-        <h1 className="h4 font-bold mt-2 font-heading w-full lg:w-[50rem]">
+        <h1 className="lg:h4 text-xl  font-bold mt-2 font-heading w-full lg:w-[50rem]">
           How to make a Game look more attractive with New VR & AI Technology
         </h1>
         <p className="mt-2 text-black/80 text-sm w-full lg:w-[50rem] font-body">

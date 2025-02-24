@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 function Hero() {
   return (
     <motion.div
-      className=" flex py-20 px-10 w-full justify-between"
+      className=" flex py-20 px-10 w-full justify-between flex-wrap gap-y-10"
       style={{
         backgroundImage: `url(${backgroundPurple})`,
         backgroundSize: "cover",
@@ -26,10 +26,10 @@ function Hero() {
         }}
       >
         <h6 className=" font-semibold">Featured Post</h6>
-        <h1 className="h2 w-[29rem] font-heading  font-semibold mt-10">
+        <h1 className="h2 lg:w-[29rem] w-96 font-heading  font-semibold mt-10">
           How Ai Will Change the Future
         </h1>
-        <p className="w-96 text-sm font-semibold mb-10">
+        <p className="lg:w-96 w-full pr-20 text-sm font-semibold mb-10">
           The future of AI will see home robots having enhanced intelligence,
           increased capabilities, and becoming more personal and possibly cute.
           For example, home robots will overcome navigation, direction
