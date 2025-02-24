@@ -31,9 +31,9 @@
   @apply px-10 py-2;
 }
 ::-webkit-scrollbar {
-  /* display: none;
-   */
-  width: 10 px;
+  /* display: none; */
+
+  width: 0px;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-gray);

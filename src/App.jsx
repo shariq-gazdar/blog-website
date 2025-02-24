@@ -6,13 +6,15 @@ import Logo from "./uiUtils/Logo";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Vr from "./components/Vr";
+import RecentPost from "./components/RecentPost";
 
 function App() {
   return (
-    <div className=" ">
+    <div className=" overflow-x-hidden">
       <Navbar />
       <Hero />
       <Vr />
+      <RecentPost />
     </div>
   );
 }
