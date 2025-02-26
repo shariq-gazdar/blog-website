@@ -6,7 +6,7 @@ function Footer() {
   return (
     <div>
       <div
-        className="flex flex-col items-center justify-center py-20 lg:p-52 text-white mt-52 gap-y-10"
+        className="flex flex-col items-center justify-center py-20 lg:p-52 text-white  gap-y-10"
         style={{
           backgroundImage: `url(${bgPurple})`,
           backgroundSize: "cover",

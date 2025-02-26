@@ -1,16 +1,30 @@
 import React, { useEffect } from "react";
-
+import { motion } from "framer-motion";
 function PostCards({ image, title, content, publishDate, genre }) {
   function shortTitle(title) {
     if (title.length >= 13) {
-      const t = title.split(" ").slice(0, 13).join(" ");
-      console.log("Shortened Title:", t); // Debugging
+      const t = title.split(" ").slice(0, 11).join(" ");
       return t + "...";
+    } else {
+      return title;
+    }
+  }
+  function short(title) {
+    if (title.length >= 4) {
+      const t = title.split(" ").slice(0, 4).join(" ");
+      return t + "...";
+    } else {
+      return title;
     }
   }
 
   return (
-    <div className="flex flex-col gap-y-5 w-fit overflow-hidden px-5 items-start">
+    <motion.div
+      className="flex flex-col gap-y-5 w-96 overflow-hidden px-5 items-start max-h-[40rem] "
+      whileHover={{
+        scale: 1.03,
+      }}
+    >
       <img
         src={image}
         alt=""
@@ -20,14 +34,19 @@ function PostCards({ image, title, content, publishDate, genre }) {
         <h6 className="font-heading text-sm font-bold">{genre}</h6>
         <p className="text-light-gray">{publishDate}</p>
       </div>
-      <h5 className="text-2xl font-heading font-bold text-dark-gray">
-        {title}
+      <h5
+        className="text-2xl font-heading font-bold text-dark-gray cursor-default"
+        title={title}
+      >
+        {short(title)}
       </h5>
-      <p className="text-gray">{shortTitle(content)}</p>
+      <p className="text-gray cursor-default" title={content}>
+        {shortTitle(content)}
+      </p>
       <button className="text-purple font-body font-bold underline">
         Read More...
       </button>
-    </div>
+    </motion.div>
   );
 }
 

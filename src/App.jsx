@@ -3,23 +3,23 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import Logo from "./uiUtils/Logo";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Vr from "./components/Vr";
-import RecentPost from "./components/RecentPost";
-import PopularPost from "./components/PopularPost";
-import Footer from "./components/Footer";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./routes/Home";
+import About from "./routes/About";
+import Blogs from "./routes/Blogs";
+import Contact from "./routes/Contact";
 
 function App() {
   return (
-    <div className="  ">
-      <Navbar />
-      <Hero />
-      <Vr />
-      <RecentPost />
-      <PopularPost />
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/blogs" element={<Blogs />} />
+        <Route exact path="/about" element={<About />} />
+        <Route exact path="/contact" element={<Contact />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
