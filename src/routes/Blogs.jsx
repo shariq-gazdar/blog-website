@@ -4,11 +4,12 @@ import Footer from "../components/Footer";
 import recents from "../jsons/recentPosts.json";
 import populars from "../jsons/popularPosts.json";
 import PostCards from "../uiUtils/PostCards";
+
 function Blogs() {
   return (
     <div>
       <Navbar />
-      <section className="font-body bg-light-gray/5 pb-52 ">
+      <section className="font-body bg-light-gray/5 pb-52 flex flex-col items-center">
         <div className="text-section flex  flex-col items-center gap-y-3 py-10 ">
           <p className="font-heading text-sm  ">Our Blogs</p>
           <h2 className="font-heading text-3xl font-semibold text-center w-[70%] lg:w-full">
@@ -44,6 +45,9 @@ function Blogs() {
             />
           ))}
         </div>
+        <button className="bg-purple p-2 w-32 text-white rounded-lg">
+          Create Blog
+        </button>
       </section>
       <Footer />
     </div>

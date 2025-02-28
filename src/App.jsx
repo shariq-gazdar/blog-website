@@ -9,16 +9,25 @@ import Home from "./routes/Home";
 import About from "./routes/About";
 import Blogs from "./routes/Blogs";
 import Contact from "./routes/Contact";
-
+import CreateBlog from "./components/CreateBlog";
+import { FirebaseContextProvider } from "./contexts/FirebaaseContext";
+import Signup from "./components/Signup";
+import Profile from "./components/Profile";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/blogs" element={<Blogs />} />
-        <Route exact path="/about" element={<About />} />
-        <Route exact path="/contact" element={<Contact />} />
-      </Routes>
+      <FirebaseContextProvider>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/blogs" element={<Blogs />} />
+          <Route exact path="/about" element={<About />} />
+          <Route exact path="/contact" element={<Contact />} />
+          <Route exact path="/create" element={<CreateBlog />} />
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/profile" element={<Profile />} />
+          {/* <Route path="*" element={<NotFound />} /> */}
+        </Routes>
+      </FirebaseContextProvider>
     </BrowserRouter>
   );
 }

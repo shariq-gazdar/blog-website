@@ -4,9 +4,16 @@ import Search from "../assets/search.png";
 import menu from "../assets/menu.png";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
-
+import User from "../assets/user-image.png";
+import { useFirebaseContext } from "../contexts/FirebaaseContext";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../config/firebase";
+import Modal from "./Modal";
 function Navbar() {
+  const navigate = useNavigate();
   const [ham, setHam] = useState(false);
+  const { user } = useFirebaseContext();
+  const [modal, setModal] = useState(false);
 
   return (
     <>
@@ -53,7 +60,17 @@ function Navbar() {
               Contact Us
             </motion.button>
           </NavLink>
+          <img
+            src={auth.currentUser ? User : auth.currentUser.photoUrl}
+            alt=""
+            className="w-10 rounded-full"
+            onClick={() => {
+              if (user) navigate("/");
+              else navigate("/signup");
+            }}
+          />
         </div>
+        {/* {user && <Modal></Modal>} */}
       </div>
 
       {/* Mobile Navbar */}
