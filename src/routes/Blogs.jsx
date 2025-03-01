@@ -4,8 +4,9 @@ import Footer from "../components/Footer";
 import recents from "../jsons/recentPosts.json";
 import populars from "../jsons/popularPosts.json";
 import PostCards from "../uiUtils/PostCards";
-
+import { useNavigate } from "react-router-dom";
 function Blogs() {
+  const navigate = useNavigate();
   return (
     <div>
       <Navbar />
@@ -45,7 +46,12 @@ function Blogs() {
             />
           ))}
         </div>
-        <button className="bg-purple p-2 w-32 text-white rounded-lg">
+        <button
+          className="bg-purple p-2 w-32 text-white rounded-lg"
+          onClick={() => {
+            navigate("/create");
+          }}
+        >
           Create Blog
         </button>
       </section>

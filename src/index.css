@@ -39,3 +39,21 @@
   background: var(--color-gray);
   border-radius: 5px;
 }
+.ql-font-arial {
+  font-family: Arial, sans-serif;
+}
+.ql-font-comic-sans {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+.ql-font-courier {
+  font-family: "Courier New", Courier, monospace;
+}
+.ql-font-georgia {
+  font-family: Georgia, serif;
+}
+.ql-font-times-new-roman {
+  font-family: "Times New Roman", Times, serif;
+}
+.ql-font-verdana {
+  font-family: Verdana, sans-serif;
+}
