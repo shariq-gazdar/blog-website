@@ -7,14 +7,16 @@ import home from "../assets/home.png";
 function Profile() {
   const navigate = useNavigate();
   return (
-    <div
-      className="bg-light-gray/5 "
-      onClick={() => {
-        navigate("/");
-      }}
-    >
-      <img src={home} alt="" className="w-10 bg-light-gray/5 float-end m-10" />
-      <div className="w-full h-screen flex justify-center items-center ">
+    <div className="bg-light-gray/5 ">
+      <div className="w-full h-screen flex justify-center  items-center flex-col ">
+        <img
+          src={home}
+          alt=""
+          className="w-10 bg-light-gray/5 float-end self-end "
+          onClick={() => {
+            navigate("/");
+          }}
+        />
         <div className="bg-white flex flex-col items-center p-2 gap-y-2 rounded-lg">
           <img
             src={auth?.currentUser?.photoURL}

@@ -9,6 +9,7 @@ import { useFirebaseContext } from "../contexts/FirebaaseContext";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../config/firebase";
 import Modal from "./Modal";
+
 function Navbar() {
   const navigate = useNavigate();
   const [ham, setHam] = useState(false);
@@ -61,16 +62,13 @@ function Navbar() {
             </motion.button>
           </NavLink>
           <img
-            src={auth.currentUser ? User : auth.currentUser.photoUrl}
-            alt=""
-            className="w-10 rounded-full"
-            onClick={() => {
-              if (user) navigate("/");
-              else navigate("/signup");
-            }}
+            src={auth.currentUser?.photoURL || User}
+            alt="User Avatar"
+            className="w-10 rounded-full cursor-pointer"
+            onClick={() => navigate(auth.currentUser ? "/profile" : "/signup")}
           />
         </div>
-        {/* {user && <Modal></Modal>} */}
+        {user && <Modal />}
       </div>
 
       {/* Mobile Navbar */}
@@ -85,7 +83,13 @@ function Navbar() {
 
         {/* Mobile Menu */}
         {ham && (
-          <motion.div className="fixed inset-0 bg-purple z-50 flex flex-col items-center justify-start pt-10 space-y-6 text-white w-[50%] ml-[50%]">
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: "0%" }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed inset-0 bg-purple z-50 flex flex-col items-center justify-start pt-10 space-y-6 text-white w-[50%] ml-[50%]"
+          >
             <NavLink
               to="/blogs"
               className={({ isActive }) =>
@@ -109,6 +113,7 @@ function Navbar() {
               className={({ isActive }) =>
                 isActive ? "text-purple font-bold" : "text-gray"
               }
+              onClick={() => setHam(false)}
             >
               <button className="bg-purple rounded-lg text-white px-4 py-2 button text-sm">
                 Contact Us
