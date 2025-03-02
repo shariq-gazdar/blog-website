@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import Logo from "./uiUtils/Logo";
-
+import BlogDetails from "./components/BlogDetails";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./routes/Home";
 import About from "./routes/About";
@@ -25,6 +25,7 @@ function App() {
           <Route exact path="/create" element={<CreateBlog />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/profile" element={<Profile />} />
+          <Route path="/blog/:id" element={<BlogDetails />} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </FirebaseContextProvider>

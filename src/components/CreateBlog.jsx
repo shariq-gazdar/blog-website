@@ -11,6 +11,7 @@ function CreateBlog() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [coverPage, setCoverPage] = useState("");
+  const [genre, setGenre] = useState("Tech");
   const editorRef = useRef(null);
   const quillInstance = useRef(null);
 
@@ -21,11 +22,19 @@ function CreateBlog() {
         placeholder: "Enter Your Blog Content Here",
         modules: {
           toolbar: [
-            [{ font: [] }], // Font family options
+            [{ font: [] }],
             [{ size: ["small", "large", "huge"] }],
             [{ header: [1, 2, 3, 4, 5, 6, false] }],
-            ["bold", "italic", "underline", "blockquote"],
-            ["image", "code-block"],
+            ["bold", "italic", "underline", "strike", "blockquote"],
+            [{ script: "sub" }, { script: "super" }], // Subscript and Superscript
+            ["image", "code-block", "link"],
+            [{ direction: "rtl" }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ indent: "-1" }, { indent: "+1" }],
+            [{ align: [] }],
+            [{ background: [] }], // Background color
+            [{ color: [] }], // Text color
+            ["clean"], // Remove formatting
           ],
         },
         formats: [
@@ -35,10 +44,19 @@ function CreateBlog() {
           "bold",
           "italic",
           "underline",
+          "strike",
           "blockquote",
+          "script",
           "image",
           "code-block",
-        ], // Enable font & size formatting
+          "link",
+          "list",
+          "indent",
+          "direction",
+          "align",
+          "background",
+          "color",
+        ],
       });
 
       quillInstance.current.on("text-change", () => {
@@ -58,34 +76,69 @@ function CreateBlog() {
   // Example usage
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const base64 = await convertToBase64(file);
-      setCoverPage(base64);
+    if (!file) return;
+
+    // Check file size (1MB = 1,048,576 bytes)
+    if (file.size > 1048576) {
+      alert("File size must be less than 1MB!");
+      return;
     }
+
+    const base64 = await convertToBase64(file);
+    setCoverPage(base64);
   };
 
   const handleSubmit = async () => {
-    const prevData = await getDocs(collection(db, "users"));
-    console.log(prevData.docs);
+    if (!title || !coverPage || !content) {
+      console.error("Title, cover page, and content are required!");
+      return;
+    }
 
-    if (title && coverPage && content) {
-      console.log("updating...");
+    try {
+      const authorName = auth.currentUser.email.split("@")[0];
+
+      // Clean title by removing special characters
+      const cleanedTitle = title
+        .replace(/[^a-zA-Z0-9 ]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase();
+
+      // Generate a unique document ID using title + author + timestamp
+      const timestamp = Date.now();
+      const docId = `${cleanedTitle}-${authorName}-${timestamp}`;
+
+      const newBlog = {
+        title,
+        content,
+        coverPage,
+        genre,
+        publishDate: new Date(),
+        author: authorName,
+        comments: [],
+      };
+
+      await setDoc(doc(db, "blogs", docId), newBlog);
+
+      console.log("Blog published successfully!", newBlog);
+    } catch (error) {
+      console.error("Error publishing blog:", error);
     }
   };
+
   return (
     <>
-      <img
-        src={Home}
-        alt=""
-        className="w-10 float-end m-3 cursor-pointer"
-        onClick={() => {
-          navigate("/");
-        }}
-      />
       <div className="p-10 ">
-        <div className="shadow-2xl p-10 flex flex-col justify-between h-[90vh] rounded-2xl">
+        <div className="shadow-purple shadow-2xl p-10 flex flex-col justify-between h-[90vh] rounded-2xl relative">
+          <img
+            src={Home}
+            alt=""
+            className="w-10 absolute right-0 top-0 m-5 cursor-pointer"
+            onClick={() => {
+              navigate("/");
+            }}
+          />
           {/* Title Input with Hover/Focus Underline */}
-          <div className="w-full relative after:content-[''] after:w-0 after:h-1 after:bg-purple after:absolute after:top-full after:left-0 after:transition-all after:duration-[0.8s] hover:after:w-full focus-within:after:w-full mb-5">
+          <div className="w-full relative after:content-[''] after:w-0 after:h-[2.5px] after:bg-purple after:absolute after:top-full after:left-0 after:transition-all after:duration-[0.8s] hover:after:w-full focus-within:after:w-full mb-5">
             <input
               type="text"
               className="title w-full outline-none font-bold text-3xl"
@@ -99,16 +152,33 @@ function CreateBlog() {
           {/* Quill Editor */}
           <div
             ref={editorRef}
-            className=" overflow-hidden border-1 border-light-gray/50 h-full"
+            className=" overflow-hidden border-1 border-light-gray/50 h-full "
           ></div>
-          <label htmlFor="name">Cover Image</label>
-          <input
-            type="file"
-            name="coverPage"
-            id="coverPage"
-            className="border w-fit px-3 rounded-lg"
-            onChange={handleFileUpload}
-          />
+          <div className="my-3">
+            <label htmlFor="name">Cover Image</label>
+            <input
+              type="file"
+              name="coverPage"
+              id="coverPage"
+              className="border w-fit px-3 rounded-lg"
+              onChange={handleFileUpload}
+            />
+          </div>
+          <div className="my-3">
+            <label htmlFor="genre">Genre:</label>
+            <select
+              id="genre"
+              name="genre"
+              className="border border-light-gray/50 p-2 rounded-lg"
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+            >
+              <option value="Tech">Tech</option>
+              <option value="Sports">Sports</option>
+              <option value="Business">Business</option>
+              <option value="Entertainment">Entertainment</option>
+            </select>
+          </div>
           <button
             className="group text-white bg-purple self-start p-3 mt-5 rounded-lg text-xs flex items-center gap-2"
             onClick={handleSubmit}

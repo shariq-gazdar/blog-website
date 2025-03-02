@@ -12,7 +12,7 @@ function Profile() {
         <img
           src={home}
           alt=""
-          className="w-10 bg-light-gray/5 float-end self-start mb-32 m-2 "
+          className="w-10 bg-light-gray/5  self-end mb-32 mr-8 mt-5 "
           onClick={() => {
             navigate("/");
           }}
