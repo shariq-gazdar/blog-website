@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import DOMPurify from "dompurify";
-import { div } from "framer-motion/client";
+import Home from "../assets/home.png";
 
 function BlogDetails() {
   const { id } = useParams(); // Get blog ID from URL
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchBlog = async () => {
       try {
@@ -38,14 +38,26 @@ function BlogDetails() {
   return (
     <div className="bg-light-gray/5">
       <div className="container bg-white rounded-2xl shadow-2xl m-10 w-[95%] p-5">
-        <h1 className="text-3xl font-bold">{blog.title}</h1>
-        <p className="text-gray-500">
-          {blog.genre} - {blog.publishDate.toDate().toLocaleDateString()}
-        </p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold">{blog.title}</h1>
+            <p className="text-gray-500">
+              {blog.genre} - {blog.publishDate.toDate().toLocaleDateString()}
+            </p>
+          </div>
+          <img
+            src={Home}
+            alt="Home"
+            className="w-12 cursor-pointer"
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+        </div>
         <img
-          src={blog.image}
+          src={blog.coverPage}
           alt={blog.title}
-          className="w-full my-5 rounded-lg"
+          className="h-[30rem] w-full object-cover my-5 rounded-lg"
         />
         <div
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog.content) }}

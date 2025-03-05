@@ -32,32 +32,17 @@ import { useNavigate } from "react-router-dom";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Timestamp } from "firebase/firestore";
-import { div } from "framer-motion/client";
+import { useFirebaseContext } from "../contexts/FirebaaseContext";
+
 function Blogs() {
   const navigate = useNavigate();
-  const [blogs, setBlogs] = useState([]);
+  const { blogs } = useFirebaseContext();
   const formatDate = (timestamp) => {
     if (timestamp instanceof Timestamp) {
       return timestamp.toDate().toLocaleDateString(); // Converts to readable date
     }
     return "Unknown Date"; // Fallback in case it's not a timestamp
   };
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "blogs"));
-        const blogsArray = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setBlogs(blogsArray);
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-      }
-    };
-
-    fetchBlogs();
-  }, []);
 
   return (
     <div>
@@ -89,6 +74,7 @@ function Blogs() {
                 content={blog.content}
                 genre={blog.genre}
                 publishDate={formatDate(blog.publishDate)}
+                id={blog.id}
               />
             </div>
           ))}

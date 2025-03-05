@@ -68,7 +68,7 @@ function Navbar() {
             onClick={() => navigate(auth.currentUser ? "/profile" : "/signup")}
           />
         </div>
-        {user && <Modal />}
+        {/* {user && <Modal />} */}
       </div>
 
       {/* Mobile Navbar */}

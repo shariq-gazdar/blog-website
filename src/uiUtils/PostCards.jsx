@@ -1,13 +1,15 @@
 import DOMPurify from "dompurify";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-function PostCards({ image, title, content, publishDate, genre }) {
+import { useNavigate } from "react-router-dom";
+function PostCards({ image, title, content, publishDate, genre, id }) {
   // useEffect(() => {
   //   console.log(image);
   // });
+  const navigate = useNavigate();
   return (
     <motion.div
-      className="flex flex-col gap-y-5 w-96 overflow-hidden px-5 items-start"
+      className="flex flex-col gap-y-5 w-96 overflow-hidden p-5 items-start h-[40rem] bg-light-gray/20 rounded-2xl"
       whileHover={{ scale: 1.03 }}
     >
       <img
@@ -23,10 +25,15 @@ function PostCards({ image, title, content, publishDate, genre }) {
         {title}
       </h5>
       <div
-        className="text-gray cursor-default"
+        className="text-gray cursor-default h-24 overflow-hidden"
         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }} // ✅ Safe HTML rendering
       />
-      <button className="text-purple font-body font-bold underline">
+      <button
+        className="text-purple font-body font-bold underline cursor-pointer"
+        onClick={() => {
+          navigate(`/blog/${id}`);
+        }}
+      >
         Read More...
       </button>
     </motion.div>
