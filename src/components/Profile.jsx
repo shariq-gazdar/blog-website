@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import { motion } from "framer-motion";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import home from "../assets/home.png";
 import { useFirebaseContext } from "../contexts/FirebaaseContext";
+import Edit from "../assets/edit.png";
+import Delete from "../assets/delete.png";
+import { doc, deleteDoc } from "firebase/firestore";
 
 function Profile() {
   const navigate = useNavigate();
@@ -32,6 +35,22 @@ function Profile() {
       setLoading(false);
     }
   }, [blogs]);
+  const deleteBlog = async (blog) => {
+    const docRef = doc(db, "blogs", blog);
+    await deleteDoc(docRef)
+      .then(() => {
+        console.log("Document successfully deleted!");
+        setLoading(true);
+        const userBlogs = blogs.filter(
+          (blog) => blog.author === auth?.currentUser?.email.split("@")[0]
+        );
+        setFilteredBlogs(userBlogs);
+        setLoading(false);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   return (
     <div className="bg-light-gray/5 h-screen">
@@ -98,7 +117,25 @@ function Profile() {
                   </p>
                 </div>
               </div>
-              <div className="controls">Edit</div>
+              <div className="controls flex gap-x-2">
+                <img
+                  src={Edit}
+                  alt="Edit"
+                  className="w-6 cursor-pointer"
+                  title="Edit"
+                />
+                <img
+                  src={Delete}
+                  id={blog.id}
+                  alt="Edit"
+                  className="w-6 cursor-pointer"
+                  title="Edit"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteBlog(e.target.id);
+                  }}
+                />
+              </div>
             </motion.div>
           ))
         ) : (

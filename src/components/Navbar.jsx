@@ -82,6 +82,12 @@ function Navbar() {
         </div>
 
         {/* Mobile Menu */}
+        <img
+          src={auth.currentUser?.photoURL || User}
+          alt="User Avatar"
+          className="w-10 rounded-full cursor-pointer lg:hidden "
+          onClick={() => navigate(auth.currentUser ? "/profile" : "/signup")}
+        />
         {ham && (
           <motion.div
             initial={{ x: "100%" }}

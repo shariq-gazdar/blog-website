@@ -15,7 +15,7 @@ function PostCards({ image, title, content, publishDate, genre, id }) {
       <img
         src={image}
         alt={title}
-        className="lg:w-96 lg:h-96 rounded-2xl object-cover w-full h-96"
+        className="lg:w-96 lg:h-80 rounded-2xl object-fill w-full h-96"
       />
       <div className="flex items-end gap-x-3">
         <h6 className="font-heading text-sm font-bold">{genre}</h6>
