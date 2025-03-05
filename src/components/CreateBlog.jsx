@@ -8,8 +8,7 @@ import { setDoc, doc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 import { useNavigate } from "react-router-dom";
 
-const IMGBB_API_KEY = "a4e3dcae3d62be4a9b76a4fa6376c1e0";
-
+const IMGBB_API_KEY = import.meta.env.VITE_IMG_KEY;
 function CreateBlog() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
