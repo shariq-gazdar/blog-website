@@ -29,14 +29,21 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PostCards from "../uiUtils/PostCards";
 import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
 import { getDocs, collection } from "firebase/firestore";
-import { db } from "../config/firebase";
 import { Timestamp } from "firebase/firestore";
 import { useFirebaseContext } from "../contexts/FirebaaseContext";
-
+import { db, auth } from "../config/firebase";
 function Blogs() {
   const navigate = useNavigate();
   const { blogs } = useFirebaseContext();
+  const [currentUser, setCurrentUser] = useState(false);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setCurrentUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, [auth]);
   const formatDate = (timestamp) => {
     if (timestamp instanceof Timestamp) {
       return timestamp.toDate().toLocaleDateString(); // Converts to readable date
@@ -82,7 +89,9 @@ function Blogs() {
 
         <button
           className="bg-purple p-2 w-32 text-white rounded-lg mt-5"
-          onClick={() => navigate("/create")}
+          onClick={() =>
+            currentUser ? navigate("/create") : navigate("/signup")
+          }
         >
           Create Blog
         </button>

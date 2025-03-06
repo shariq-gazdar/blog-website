@@ -77,6 +77,7 @@ function BlogDetails() {
         <div
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog.content) }}
         />
+        <h1>Author ~ {blog.author}</h1>
       </div>
     </div>
   );
