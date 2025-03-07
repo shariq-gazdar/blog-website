@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import "quill/dist/quill.snow.css"; // Import Quill styles
+import "quill/dist/quill.snow.css";
 import Quill from "quill";
 import send from "../assets/send.svg";
 import { db, auth } from "../config/firebase";
@@ -9,6 +9,7 @@ import imageCompression from "browser-image-compression";
 import { useNavigate } from "react-router-dom";
 
 const IMGBB_API_KEY = import.meta.env.VITE_IMG_KEY;
+
 function CreateBlog() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -48,114 +49,14 @@ function CreateBlog() {
     }
   }, []);
 
-  const extractBase64Images = (htmlContent) => {
-    const base64Regex =
-      /<img[^>]+src=["'](data:image\/(png|jpeg|jpg|gif);base64,[^"']+)["'][^>]*>/g;
-    return [...htmlContent.matchAll(base64Regex)].map((match) => match[1]);
-  };
-
-  const base64ToFile = (base64String, filename) => {
-    let arr = base64String.split(",");
-    let mime = arr[0].match(/:(.*?);/)[1];
-    let bstr = atob(arr[1]);
-    let n = bstr.length;
-    let u8arr = new Uint8Array(n);
-
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-
-    return new File([u8arr], filename, { type: mime });
-  };
-
-  const uploadToImgBB = async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append("image", file);
-
-      const response = await fetch(
-        `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-
-      if (data.success) {
-        return data.data.url; // ImgBB returns the direct image URL
-      } else {
-        console.error("ImgBB Upload Error:", data);
-        return null;
-      }
-    } catch (error) {
-      console.error("Fetch Error:", error);
-      return null;
-    }
-  };
-
-  const processBlogContent = async (htmlContent) => {
-    let updatedContent = htmlContent;
-    const base64Images = extractBase64Images(htmlContent);
-
-    for (const base64Image of base64Images) {
-      const imageFile = base64ToFile(base64Image, "blog-image.png");
-      const uploadedURL = await uploadToImgBB(imageFile);
-
-      if (uploadedURL) {
-        updatedContent = updatedContent.replace(base64Image, uploadedURL);
-      }
-    }
-
-    return updatedContent;
-  };
-
-  const handleFileUpload = async (event) => {
-    console.log("File upload triggered");
-
-    const file = event.target.files[0];
-    if (!file) {
-      console.log("No file selected");
-      return;
-    }
-
-    console.log("Selected file:", file.name, "Size:", file.size);
-
-    if (file.size > 1048576) {
-      alert("File size must be less than 1MB!");
-      return;
-    }
-
-    try {
-      const compressedFile = await imageCompression(file, {
-        maxSizeMB: 0.3,
-        maxWidthOrHeight: 1000,
-      });
-
-      console.log("Compression successful:", compressedFile);
-
-      const uploadedURL = await uploadToImgBB(compressedFile);
-      if (uploadedURL) {
-        console.log("Uploaded to Imgur:", uploadedURL);
-        setCoverPage(uploadedURL);
-      }
-    } catch (error) {
-      console.error("Error during file upload:", error);
-    }
-  };
-
   const handleSubmit = async () => {
-    console.log(coverPage);
-
     if (!title || !content || !coverPage) {
-      console.error("Title, cover page, and content are required!");
+      alert("Title, content, and cover image are required!");
       return;
     }
 
     try {
       const authorName = auth.currentUser?.email.split("@")[0] || "unknown";
-
       const cleanedTitle = title
         .replace(/[^a-zA-Z0-9 ]/g, "")
         .replace(/\s+/g, "-")
@@ -163,11 +64,9 @@ function CreateBlog() {
       const timestamp = Date.now();
       const docId = `${cleanedTitle}-${authorName}-${timestamp}`;
 
-      const processedContent = await processBlogContent(content);
-
       const newBlog = {
         title,
-        content: processedContent,
+        content,
         coverPage,
         genre,
         publishDate: new Date(),
@@ -176,7 +75,7 @@ function CreateBlog() {
       };
 
       await setDoc(doc(db, "blogs", docId), newBlog);
-      console.log("Blog published successfully!", newBlog);
+      alert("Blog published successfully!");
       navigate("/");
     } catch (error) {
       console.error("Error publishing blog:", error);
@@ -184,55 +83,59 @@ function CreateBlog() {
   };
 
   return (
-    <>
-      <div className="p-10">
-        <div className="shadow-purple shadow-2xl p-10 flex flex-col justify-between h-[90vh] rounded-2xl relative">
+    <div className="p-10">
+      <div className="shadow-purple shadow-2xl p-10 flex flex-col justify-between h-[90vh] rounded-2xl relative">
+        <img
+          src={Home}
+          alt="Home"
+          className="w-10 absolute right-0 top-0 m-5 cursor-pointer"
+          onClick={() => navigate("/")}
+        />
+
+        <input
+          type="text"
+          className="title w-full outline-none font-bold text-3xl mb-4"
+          placeholder="Enter Title For Your Blog"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+
+        <select
+          className="border p-2 rounded-lg mb-4"
+          value={genre}
+          onChange={(e) => setGenre(e.target.value)}
+        >
+          <option value="Tech">Tech</option>
+          <option value="Lifestyle">Lifestyle</option>
+          <option value="Education">Education</option>
+          <option value="Travel">Travel</option>
+          <option value="Health">Health</option>
+        </select>
+
+        <div
+          ref={editorRef}
+          className="overflow-hidden border border-light-gray/50 h-full"
+        ></div>
+
+        <input
+          type="file"
+          className="border w-fit px-3 py-1 rounded-lg my-3"
+          onChange={(e) => setCoverPage(URL.createObjectURL(e.target.files[0]))}
+        />
+
+        <button
+          className="group text-white bg-purple self-start p-3 mt-5 rounded-lg text-xs flex items-center gap-2"
+          onClick={handleSubmit}
+        >
+          Publish
           <img
-            src={Home}
-            alt="Home"
-            className="w-10 absolute right-0 top-0 m-5 cursor-pointer"
-            onClick={() => navigate("/")}
+            src={send}
+            alt="Send Icon"
+            className="w-4 h-0 opacity-0 group-hover:opacity-100 group-hover:h-4 transition-opacity duration-[1s] rotate-[-45deg]"
           />
-          <div className="w-full relative after:content-[''] after:w-0 after:h-[2.5px] after:bg-purple after:absolute after:top-full after:left-0 after:transition-all after:duration-[0.8s] hover:after:w-full focus-within:after:w-full mb-5">
-            <input
-              type="text"
-              className="title w-full outline-none font-bold text-3xl"
-              name="title"
-              placeholder="Enter Title For Your Blog"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-
-          <div
-            ref={editorRef}
-            className="overflow-hidden border border-light-gray/50 h-full"
-          ></div>
-
-          <div className="my-3">
-            <label htmlFor="coverPage">Cover Image</label>
-            <input
-              type="file"
-              id="coverPage"
-              className="border w-fit px-3 rounded-lg"
-              onChange={handleFileUpload}
-            />
-          </div>
-
-          <button
-            className="group text-white bg-purple self-start p-3 mt-5 rounded-lg text-xs flex items-center gap-2"
-            onClick={handleSubmit}
-          >
-            Publish
-            <img
-              src={send}
-              alt="Send Icon"
-              className="w-4 h-0 opacity-0 group-hover:opacity-100 group-hover:h-4 transition-opacity duration-[1s] rotate-[-45deg]"
-            />
-          </button>
-        </div>
+        </button>
       </div>
-    </>
+    </div>
   );
 }
 

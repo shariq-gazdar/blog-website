@@ -123,6 +123,10 @@ function Profile() {
                   alt="Edit"
                   className="w-6 cursor-pointer"
                   title="Edit"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/edit/${blog.id}`);
+                  }}
                 />
                 <img
                   src={Delete}

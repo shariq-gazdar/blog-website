@@ -13,6 +13,7 @@ import CreateBlog from "./components/CreateBlog";
 import { FirebaseContextProvider } from "./contexts/FirebaaseContext";
 import Signup from "./components/Signup";
 import Profile from "./components/Profile";
+import EditBlog from "./components/EditBlog";
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +27,7 @@ function App() {
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/profile" element={<Profile />} />
           <Route path="/blog/:id" element={<BlogDetails />} />
+          <Route path="/edit/:id" element={<EditBlog />} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </FirebaseContextProvider>
