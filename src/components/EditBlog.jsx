@@ -19,7 +19,16 @@ function EditBlog() {
   const [coverPage, setCoverPage] = useState(null);
   const [genre, setGenre] = useState("Tech");
 
-  const genres = ["Tech", "Health", "Travel", "Education", "Food", "Fashion"];
+  const genres = [
+    "Tech",
+    "Health",
+    "Travel",
+    "Education",
+    "Food",
+    "Fashion",
+    "Gaming",
+    "Politics",
+  ];
 
   useEffect(() => {
     if (editorRef.current && !quillInstance.current) {
@@ -155,7 +164,7 @@ function EditBlog() {
               className="w-10 absolute right-0 top-0 m-5 cursor-pointer"
               onClick={() => navigate("/")}
             />
-            <div className="w-full mb-5 relative">
+            <div className="w-full relative after:content-[''] after:w-0 after:h-[2.5px] after:bg-purple after:absolute after:top-full after:left-0 after:transition-all after:duration-[0.8s] hover:after:w-full focus-within:after:w-full mb-5">
               <input
                 type="text"
                 className="title w-full outline-none font-bold text-3xl"
@@ -166,6 +175,10 @@ function EditBlog() {
               />
             </div>
 
+            <div
+              ref={editorRef}
+              className="overflow-hidden border border-light-gray/50 h-[105%]"
+            ></div>
             {/* Genre Selection */}
             <div className="mb-5">
               <label className="block mb-2 font-semibold">Genre:</label>
@@ -181,12 +194,6 @@ function EditBlog() {
                 ))}
               </select>
             </div>
-
-            <div
-              ref={editorRef}
-              className="overflow-hidden border border-light-gray/50 h-full"
-            ></div>
-
             <div className="my-3 flex">
               <label htmlFor="coverPage">Cover Image</label>
               <img src={coverPage} alt="" className="w-10" />

@@ -58,12 +58,11 @@
   font-family: Verdana, sans-serif;
 }
 ::-moz-selection {
-  /* Code for Firefox */
   color: white;
-  background: #6929ff;
+  background: #8a5afb;
 }
 
 ::selection {
   color: white;
-  background: #6929ff;
+  background: #8a5afb;
 }

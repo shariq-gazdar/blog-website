@@ -1,29 +1,3 @@
-{
-  /* <div className="flex justify-center items-center gap-x-1 flex-wrap lg:flex-nowrap gap-y-10 lg:gap-y-0">
-          {recents.map((recent) => (
-            <PostCards
-              key={recent.title} // Add a unique key if available
-              image={recent.image}
-              title={recent.title}
-              content={recent.content}
-              genre={recent.genre}
-              publishDate={recent.publishDate}
-            />
-          ))}
-        </div>
-        <div className="flex justify-center items-center gap-x-1 flex-wrap lg:flex-wrap gap-y-10 lg:gap-y-5 py-5  ">
-          {populars.map((popular) => (
-            <PostCards
-              key={popular.title} // Add a unique key if available
-              image={popular.image}
-              title={popular.title}
-              content={popular.content}
-              genre={popular.genre}
-              publishDate={popular.publishDate}
-            />
-          ))}
-        </div> */
-}
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -34,6 +8,7 @@ import { getDocs, collection } from "firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import { useFirebaseContext } from "../contexts/FirebaaseContext";
 import { db, auth } from "../config/firebase";
+import { motion } from "framer-motion";
 function Blogs() {
   const navigate = useNavigate();
   const { blogs } = useFirebaseContext();
@@ -67,13 +42,9 @@ function Blogs() {
         </div>
 
         {/* Display blogs */}
-        <div className="flex flex-wrap justify-center gap-5">
+        <div className="flex flex-wrap justify-start mx-10 gap-6">
           {blogs.map((blog) => (
-            <div
-            // onClick={() => {
-            //   navigate(`/blog/${blog.id}`);
-            // }}
-            >
+            <div>
               <PostCards
                 key={blog.id}
                 image={blog.coverPage}
@@ -87,14 +58,19 @@ function Blogs() {
           ))}
         </div>
 
-        <button
+        <motion.button
           className="bg-purple p-2 w-32 text-white rounded-lg mt-5"
           onClick={() =>
             currentUser ? navigate("/create") : navigate("/signup")
           }
+          whileHover={{
+            scale: 1.03,
+            transition: { duration: 0.2 },
+          }}
+          whileTap={{ scale: 0.9, transition: { duration: 0.2 } }}
         >
           Create Blog
-        </button>
+        </motion.button>
       </section>
       <Footer />
     </div>

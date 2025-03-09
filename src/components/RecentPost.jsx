@@ -29,7 +29,14 @@ function RecentPost() {
 
   const formatDate = (timestamp) => {
     return timestamp instanceof Timestamp
-      ? timestamp.toDate().toLocaleDateString()
+      ? timestamp
+          .toDate()
+          .toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })
+          .replace(/\//g, "-")
       : "Unknown Date";
   };
 

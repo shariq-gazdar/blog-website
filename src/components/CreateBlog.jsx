@@ -7,7 +7,7 @@ import Home from "../assets/home.png";
 import { setDoc, doc } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 import { useNavigate } from "react-router-dom";
-
+import { motion } from "framer-motion";
 const IMGBB_API_KEY = import.meta.env.VITE_IMG_KEY;
 
 function CreateBlog() {
@@ -92,13 +92,16 @@ function CreateBlog() {
           onClick={() => navigate("/")}
         />
 
-        <input
-          type="text"
-          className="title w-full outline-none font-bold text-3xl mb-4"
-          placeholder="Enter Title For Your Blog"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <div className="w-full relative after:content-[''] after:w-0 after:h-[2.5px] after:bg-purple after:absolute after:top-full after:left-0 after:transition-all after:duration-[0.8s] hover:after:w-full focus-within:after:w-full mb-5">
+          <input
+            type="text"
+            className="title w-full outline-none font-bold text-3xl"
+            name="title"
+            placeholder="Enter Title For Your Blog"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
 
         <select
           className="border p-2 rounded-lg mb-4"
@@ -110,6 +113,8 @@ function CreateBlog() {
           <option value="Education">Education</option>
           <option value="Travel">Travel</option>
           <option value="Health">Health</option>
+          <option value="Gaming">Gaming</option>
+          <option value="Politics">Politics</option>
         </select>
 
         <div
@@ -123,9 +128,14 @@ function CreateBlog() {
           onChange={(e) => setCoverPage(URL.createObjectURL(e.target.files[0]))}
         />
 
-        <button
+        <motion.button
           className="group text-white bg-purple self-start p-3 mt-5 rounded-lg text-xs flex items-center gap-2"
           onClick={handleSubmit}
+          whileHover={{
+            scale: 1.03,
+            transition: { duration: 0.2 },
+          }}
+          whileTap={{ scale: 0.9, transition: { duration: 0.2 } }}
         >
           Publish
           <img
@@ -133,7 +143,7 @@ function CreateBlog() {
             alt="Send Icon"
             className="w-4 h-0 opacity-0 group-hover:opacity-100 group-hover:h-4 transition-opacity duration-[1s] rotate-[-45deg]"
           />
-        </button>
+        </motion.button>
       </div>
     </div>
   );
